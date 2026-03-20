@@ -2,34 +2,53 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
   <title>Habit Tracker</title>
-
-  <!-- Telegram Web App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root {
-      --tg-theme-bg-color: #ffffff;
-      --tg-theme-text-color: #222222;
-      --tg-theme-button-color: #2481cc;
-      --tg-theme-button-text-color: #ffffff;
-      --tg-theme-secondary-bg-color: #efeff3;
-      --ok-color: #22c55e;
-      --muted-text: #6b7280;
+      --bg: #f3f5f8;
+      --card: #ffffff;
+      --card-2: #f8fafc;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #3b82f6;
+      --primary-text: #ffffff;
+      --success: #22c55e;
       --danger: #ef4444;
+
+      --row-bg: #ffffff;
+      --row-text: #111827;
+      --row-border: #e5e7eb;
+
+      --row-checked-bg: #eaf7ef;
+      --row-checked-text: #0f172a;
+      --row-checked-border: #cfe8d7;
+
+      --track-bg: #dbe2ea;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      margin: 0;
-      padding: 18px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--tg-theme-secondary-bg-color);
-      color: var(--tg-theme-text-color);
+      padding: 16px;
     }
 
     .app {
@@ -38,153 +57,180 @@
     }
 
     .card {
-      background: var(--tg-theme-bg-color);
-      border-radius: 18px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .header {
-      margin-bottom: 14px;
-      text-align: center;
+    .top-card {
+      padding: 22px 18px 18px;
+      margin-bottom: 16px;
     }
 
     .title {
-      margin: 0 0 8px;
-      font-size: 1.5rem;
+      margin: 0;
+      text-align: center;
+      font-size: 1.85rem;
       font-weight: 800;
+      letter-spacing: -0.02em;
     }
 
-    .subtitle {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--tg-theme-button-color);
+    .day-line {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--primary);
     }
 
-    .top-card {
-      padding: 18px;
-      margin-bottom: 14px;
+    .section-gap {
+      height: 8px;
     }
 
-    .progress-label-row {
+    .progress-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
+      gap: 12px;
+      margin-top: 20px;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .progress-subtext {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.98rem;
       font-weight: 700;
     }
 
-    .progress-sub {
-      color: var(--muted-text);
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-    }
-
     .progress-track {
+      margin-top: 14px;
       width: 100%;
-      height: 14px;
+      height: 16px;
+      background: var(--track-bg);
       border-radius: 999px;
-      background: #dfe4ea;
       overflow: hidden;
     }
 
     .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--tg-theme-button-color), var(--ok-color));
-      transition: width 0.25s ease;
       border-radius: 999px;
+      background: linear-gradient(90deg, #4f8df9 0%, #28c76f 100%);
+      transition: width 0.25s ease;
     }
 
     .habit-list {
-      background: var(--tg-theme-bg-color);
-      border-radius: 18px;
+      background: var(--card);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
       overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
 
     .habit-item {
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 16px;
-      border-bottom: 1px solid #edf0f3;
+      min-height: 82px;
+      padding: 0 18px;
+      background: var(--row-bg);
+      color: var(--row-text);
+      border-bottom: 1px solid var(--row-border);
       cursor: pointer;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     }
 
     .habit-item:last-child {
       border-bottom: none;
     }
 
-    .habit-item:hover {
-      background: #fafbfc;
-    }
-
     .habit-item.checked {
-      background: #f0fdf4;
+      background: var(--row-checked-bg);
+      color: var(--row-checked-text);
+      border-color: var(--row-checked-border);
     }
 
     .habit-item input[type="checkbox"] {
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       margin: 0;
       flex: 0 0 auto;
-      accent-color: var(--tg-theme-button-color);
+      accent-color: var(--primary);
       pointer-events: none;
     }
 
-    .habit-text {
-      font-size: 1rem;
+    .habit-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.02rem;
+      font-weight: 700;
       line-height: 1.35;
-      font-weight: 500;
+      flex: 1;
+      color: inherit;
+    }
+
+    .habit-emoji {
+      font-size: 1.6rem;
+      line-height: 1;
+      width: 34px;
+      text-align: center;
+      flex: 0 0 34px;
     }
 
     .footer {
-      margin-top: 14px;
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 18px;
     }
 
     .btn {
-      border: 0;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 1rem;
-      font-weight: 700;
+      border: none;
+      border-radius: 20px;
+      min-height: 72px;
+      padding: 0 18px;
+      font-size: 1.05rem;
+      font-weight: 800;
       cursor: pointer;
+      transition: transform 0.05s ease, opacity 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.99);
     }
 
     .btn-primary {
-      background: var(--tg-theme-button-color);
-      color: var(--tg-theme-button-text-color);
-      flex: 1 1 220px;
+      flex: 1.2;
+      background: var(--primary);
+      color: var(--primary-text);
     }
 
     .btn-secondary {
+      flex: 0.9;
       background: #e5e7eb;
       color: #111827;
-      flex: 1 1 160px;
     }
 
     .helper {
-      margin-top: 12px;
-      color: var(--muted-text);
-      font-size: 0.92rem;
+      margin-top: 16px;
       text-align: center;
-    }
-
-    .status {
-      margin-top: 12px;
-      font-size: 0.95rem;
-      text-align: center;
+      color: var(--muted);
+      font-size: 0.96rem;
       font-weight: 700;
     }
 
+    .status {
+      min-height: 24px;
+      margin-top: 8px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
     .status.ok {
-      color: var(--ok-color);
+      color: var(--success);
     }
 
     .status.error {
@@ -196,12 +242,25 @@
         padding: 14px;
       }
 
-      .habit-item {
-        padding: 14px;
+      .top-card {
+        padding: 20px 16px 16px;
       }
 
       .title {
-        font-size: 1.3rem;
+        font-size: 1.7rem;
+      }
+
+      .habit-item {
+        min-height: 78px;
+        padding: 0 16px;
+      }
+
+      .footer {
+        gap: 12px;
+      }
+
+      .btn {
+        min-height: 68px;
       }
     }
   </style>
@@ -209,161 +268,195 @@
 <body>
   <div class="app">
     <div class="card top-card">
-      <div class="header">
-        <h1 class="title">📝 บันทึกความสำเร็จ</h1>
-        <div id="display-day" class="subtitle">กำลังโหลด...</div>
-      </div>
+      <h1 class="title">📝 บันทึกความสำเร็จ</h1>
+      <div id="display-day" class="day-line">Day ? / Habit</div>
 
-      <div class="progress-label-row">
+      <div class="progress-row">
         <div>ความคืบหน้าวันนี้</div>
-        <div id="progress-text">0/0</div>
+        <div id="progress-text">0/9</div>
       </div>
-
-      <div class="progress-sub" id="progress-subtext">ยังไม่ได้เลือกกิจกรรม</div>
+      <div id="progress-subtext" class="progress-subtext">ยังไม่ได้เลือกกิจกรรม</div>
 
       <div class="progress-track">
         <div id="progress-fill" class="progress-fill"></div>
       </div>
     </div>
 
-    <div class="habit-list" id="habit-container"></div>
+    <div id="habit-container" class="habit-list"></div>
 
     <div class="footer">
-      <button class="btn btn-primary" id="save-btn">บันทึกคะแนน</button>
-      <button class="btn btn-secondary" id="clear-btn">ล้างทั้งหมด</button>
+      <button id="save-btn" class="btn btn-primary">บันทึกคะแนน</button>
+      <button id="clear-btn" class="btn btn-secondary">ล้างทั้งหมด</button>
     </div>
 
-    <div class="helper" id="helper-text">
-      เปิดผ่าน Telegram จะส่งข้อมูลกลับหาบอทได้ทันที
-    </div>
-
+    <div id="helper-text" class="helper">กำลังโหลด...</div>
     <div id="status" class="status"></div>
   </div>
 
   <script>
     const tg = window.Telegram?.WebApp || null;
 
-    if (tg) {
-      tg.ready();
-      tg.expand();
-
-      const bg = tg.themeParams.bg_color;
-      const text = tg.themeParams.text_color;
-      const button = tg.themeParams.button_color;
-      const buttonText = tg.themeParams.button_text_color;
-      const secondary = tg.themeParams.secondary_bg_color;
-
-      if (bg) document.documentElement.style.setProperty('--tg-theme-bg-color', bg);
-      if (text) document.documentElement.style.setProperty('--tg-theme-text-color', text);
-      if (button) document.documentElement.style.setProperty('--tg-theme-button-color', button);
-      if (buttonText) document.documentElement.style.setProperty('--tg-theme-button-text-color', buttonText);
-      if (secondary) document.documentElement.style.setProperty('--tg-theme-secondary-bg-color', secondary);
-    }
-
     const habits = [
-      { id: "H1", text: "🥤 เชคมื้อเช้า" },
-      { id: "H2", text: "🏃 ออกกำลังกาย" },
-      { id: "H3", text: "💧 ดื่มน้ำเพียงพอ" },
-      { id: "H4", text: "🥤 เชคแก้วที่ 2" },
-      { id: "H5", text: "🍚 มื้ออาหารสุขภาพ" },
-      { id: "H6", text: "🌙 นอนหลับดี" },
-      { id: "H7", text: "🍔 ไม่กินของอ้วน" },
-      { id: "H8", text: "🚭 ไม่สูบบุหรี่" },
-      { id: "H9", text: "🍺 ไม่ดื่มแอลกอฮอล์" }
+      { id: "H1", emoji: "🥤", text: "เชคมื้อเช้า" },
+      { id: "H2", emoji: "🏃", text: "ออกกำลังกาย" },
+      { id: "H3", emoji: "💧", text: "ดื่มน้ำเพียงพอ" },
+      { id: "H4", emoji: "🥤", text: "เชคแก้วที่ 2" },
+      { id: "H5", emoji: "🍚", text: "มื้ออาหารสุขภาพ" },
+      { id: "H6", emoji: "🌙", text: "นอนหลับดี" },
+      { id: "H7", emoji: "🍔", text: "ไม่กินของอ้วน" },
+      { id: "H8", emoji: "🚭", text: "ไม่สูบบุหรี่" },
+      { id: "H9", emoji: "🍺", text: "ไม่ดื่มแอลกอฮอล์" }
     ];
 
+    const displayDay = document.getElementById("display-day");
+    const habitContainer = document.getElementById("habit-container");
+    const progressText = document.getElementById("progress-text");
+    const progressSubtext = document.getElementById("progress-subtext");
+    const progressFill = document.getElementById("progress-fill");
+    const saveBtn = document.getElementById("save-btn");
+    const clearBtn = document.getElementById("clear-btn");
+    const helperText = document.getElementById("helper-text");
+    const statusEl = document.getElementById("status");
+
     const urlParams = new URLSearchParams(window.location.search);
-    const day = urlParams.get('day') || '?';
-    const type = urlParams.get('type') || 'Habit';
-    const preset = (urlParams.get('selected') || '').split(',').filter(Boolean);
+    const day = urlParams.get("day") || "?";
+    const type = urlParams.get("type") || "Habit";
+    const preset = (urlParams.get("selected") || "").split(",").filter(Boolean);
 
-    const displayDay = document.getElementById('display-day');
-    const container = document.getElementById('habit-container');
-    const progressFill = document.getElementById('progress-fill');
-    const progressText = document.getElementById('progress-text');
-    const progressSubtext = document.getElementById('progress-subtext');
-    const saveBtn = document.getElementById('save-btn');
-    const clearBtn = document.getElementById('clear-btn');
-    const helperText = document.getElementById('helper-text');
-    const statusEl = document.getElementById('status');
+    displayDay.textContent = `Day ${day} / ${type}`;
 
-    displayDay.innerText = `Day ${day} / ${type}`;
-
-    function setStatus(message = '', mode = '') {
-      statusEl.className = 'status';
-      if (!message) {
-        statusEl.textContent = '';
-        return;
-      }
+    function setStatus(message = "", mode = "") {
       statusEl.textContent = message;
+      statusEl.className = "status";
       if (mode) statusEl.classList.add(mode);
     }
 
+    function applyTelegramTheme() {
+      if (!tg) {
+        helperText.textContent = "โหมดทดสอบบนเว็บ: ปุ่มบันทึกจะยังไม่ส่งกลับ Telegram";
+        return;
+      }
+
+      tg.ready();
+      tg.expand();
+
+      const isDark = tg.colorScheme === "dark";
+      const root = document.documentElement;
+      const tp = tg.themeParams || {};
+
+      const bg = tp.secondary_bg_color || (isDark ? "#0f1115" : "#f3f5f8");
+      const card = tp.bg_color || (isDark ? "#171a21" : "#ffffff");
+      const text = tp.text_color || (isDark ? "#f3f4f6" : "#111827");
+      const hint = tp.hint_color || (isDark ? "#9ca3af" : "#6b7280");
+      const button = tp.button_color || "#3b82f6";
+      const buttonText = tp.button_text_color || "#ffffff";
+
+      root.style.setProperty("--bg", bg);
+      root.style.setProperty("--card", card);
+      root.style.setProperty("--card-2", isDark ? "#1e232d" : "#f8fafc");
+      root.style.setProperty("--text", text);
+      root.style.setProperty("--muted", hint);
+      root.style.setProperty("--primary", button);
+      root.style.setProperty("--primary-text", buttonText);
+      root.style.setProperty("--border", isDark ? "#2b3340" : "#e5e7eb");
+      root.style.setProperty("--track-bg", isDark ? "#2d3748" : "#dbe2ea");
+
+      if (isDark) {
+        root.style.setProperty("--row-bg", "#12161d");
+        root.style.setProperty("--row-text", "#f3f4f6");
+        root.style.setProperty("--row-border", "#2b3340");
+
+        root.style.setProperty("--row-checked-bg", "#203427");
+        root.style.setProperty("--row-checked-text", "#f8fafc");
+        root.style.setProperty("--row-checked-border", "#335d41");
+      } else {
+        root.style.setProperty("--row-bg", "#ffffff");
+        root.style.setProperty("--row-text", "#111827");
+        root.style.setProperty("--row-border", "#e5e7eb");
+
+        root.style.setProperty("--row-checked-bg", "#eaf7ef");
+        root.style.setProperty("--row-checked-text", "#0f172a");
+        root.style.setProperty("--row-checked-border", "#cfe8d7");
+      }
+
+      helperText.textContent = "เชื่อมต่อกับ Telegram Web App แล้ว";
+
+      if (tg.MainButton) {
+        tg.MainButton.hide();
+      }
+    }
+
     function getSelectedHabits() {
-      return Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.id);
+      return Array.from(
+        document.querySelectorAll('input[type="checkbox"]:checked')
+      ).map((cb) => cb.id);
     }
 
     function updateProgress() {
       const selected = getSelectedHabits();
-      const total = habits.length;
       const done = selected.length;
-      const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+      const total = habits.length;
+      const percent = Math.round((done / total) * 100);
 
-      progressFill.style.width = percent + '%';
       progressText.textContent = `${done}/${total}`;
+      progressFill.style.width = `${percent}%`;
 
       if (done === 0) {
-        progressSubtext.textContent = 'ยังไม่ได้เลือกกิจกรรม';
+        progressSubtext.textContent = "ยังไม่ได้เลือกกิจกรรม";
       } else if (done === total) {
-        progressSubtext.textContent = 'ยอดเยี่ยม ทำครบทุกข้อแล้ว 🎉';
+        progressSubtext.textContent = "ยอดเยี่ยม ทำครบทุกข้อแล้ว 🎉";
       } else {
         progressSubtext.textContent = `สำเร็จแล้ว ${percent}%`;
       }
 
-      document.querySelectorAll('.habit-item').forEach(item => {
-        const cb = item.querySelector('input[type="checkbox"]');
-        item.classList.toggle('checked', cb.checked);
+      document.querySelectorAll(".habit-item").forEach((row) => {
+        const cb = row.querySelector("input[type='checkbox']");
+        row.classList.toggle("checked", cb.checked);
       });
     }
 
     function renderHabits() {
-      container.innerHTML = '';
+      habitContainer.innerHTML = "";
 
-      habits.forEach(habit => {
-        const row = document.createElement('div');
-        row.className = 'habit-item';
+      habits.forEach((habit) => {
+        const row = document.createElement("div");
+        row.className = "habit-item";
 
         const checked = preset.includes(habit.id);
 
         row.innerHTML = `
-          <input type="checkbox" id="${habit.id}" value="${habit.id}" ${checked ? 'checked' : ''}>
-          <label class="habit-text" for="${habit.id}">${habit.text}</label>
+          <input type="checkbox" id="${habit.id}" ${checked ? "checked" : ""}>
+          <label class="habit-label" for="${habit.id}">
+            <span class="habit-emoji">${habit.emoji}</span>
+            <span>${habit.text}</span>
+          </label>
         `;
 
-        row.addEventListener('click', (e) => {
-          const checkbox = row.querySelector('input[type="checkbox"]');
-          if (e.target.tagName !== 'INPUT') {
+        row.addEventListener("click", (e) => {
+          const checkbox = row.querySelector("input[type='checkbox']");
+          if (e.target.tagName !== "INPUT") {
             checkbox.checked = !checkbox.checked;
           }
           updateProgress();
-          setStatus('');
+          setStatus("");
         });
 
-        container.appendChild(row);
+        habitContainer.appendChild(row);
       });
 
       updateProgress();
     }
 
     function buildPayload() {
+      const selected = getSelectedHabits();
       return {
         action: "SUBMIT_HABIT",
-        data: getSelectedHabits(),
+        data: selected,
         day: day,
         type: type,
         total: habits.length,
-        completed: getSelectedHabits().length,
-        percent: Math.round((getSelectedHabits().length / habits.length) * 100)
+        completed: selected.length,
+        percent: Math.round((selected.length / habits.length) * 100)
       };
     }
 
@@ -381,35 +474,39 @@
 
       const payload = buildPayload();
 
-      if (tg) {
-        tg.sendData(JSON.stringify(payload));
-        setStatus("ส่งข้อมูลกลับไปที่ Telegram แล้ว", "ok");
-      } else {
-        setStatus("โหมดทดสอบ: หน้านี้ไม่ได้เปิดผ่าน Telegram", "error");
-        console.log("TEST PAYLOAD:", payload);
-        alert("โหมดทดสอบ: ยังไม่ได้เปิดผ่าน Telegram\n\nดูข้อมูลที่ Console ได้");
+      try {
+        if (tg) {
+          tg.sendData(JSON.stringify(payload));
+          setStatus("ส่งข้อมูลเรียบร้อยแล้ว", "ok");
+          setTimeout(() => {
+            try {
+              tg.close();
+            } catch (e) {}
+          }, 250);
+        } else {
+          console.log("TEST PAYLOAD:", payload);
+          setStatus("โหมดทดสอบ: ยังไม่ได้เปิดผ่าน Telegram", "error");
+          alert("โหมดทดสอบ: ดูข้อมูลที่ Console ได้");
+        }
+      } catch (err) {
+        console.error(err);
+        setStatus("เกิดข้อผิดพลาดในการส่งข้อมูล", "error");
       }
     }
 
     function clearAll() {
-      document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
         cb.checked = false;
       });
       updateProgress();
-      setStatus('');
+      setStatus("");
     }
 
+    saveBtn.addEventListener("click", saveData);
+    clearBtn.addEventListener("click", clearAll);
+
+    applyTelegramTheme();
     renderHabits();
-
-    saveBtn.addEventListener('click', saveData);
-    clearBtn.addEventListener('click', clearAll);
-
-    if (tg) {
-  helperText.textContent = "เชื่อมต่อกับ Telegram Web App แล้ว";
-  tg.MainButton.hide();
-} else {
-  helperText.textContent = "โหมดทดสอบบนเว็บ: ปุ่มบันทึกจะยังไม่ส่งกลับ Telegram";
-}
   </script>
 </body>
 </html>
