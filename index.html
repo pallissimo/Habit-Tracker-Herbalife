@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="th"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Habit Tracker&lt;/title&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Telegram Web App SDK --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://telegram.org/js/telegram-web-app.js"&gt;&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>:root {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--tg-theme-bg-color: #ffffff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--tg-theme-text-color: #222222;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--tg-theme-button-color: #2481cc;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--tg-theme-button-text-color: #ffffff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--tg-theme-secondary-bg-color: #efeff3;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--ok-color: #22c55e;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--muted-text: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--danger: #ef4444;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-secondary-bg-color);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--tg-theme-text-color);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.app {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 560px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-bg-color);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 2px 10px rgba(0,0,0,0.06);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.header {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.title {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 0 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 800;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.subtitle {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--tg-theme-button-color);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.top-card {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.progress-label-row {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.95rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.progress-sub {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted-text);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.progress-track {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #dfe4ea;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.progress-fill {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 0%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: linear-gradient(90deg, var(--tg-theme-button-color), var(--ok-color));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transition: width 0.25s ease;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 999px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.habit-list {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-bg-color);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 2px 10px rgba(0,0,0,0.06);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.habit-item {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-bottom: 1px solid #edf0f3;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>transition: background 0.15s ease;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.habit-item:last-child {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-bottom: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.habit-item:hover {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #fafbfc;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.habit-item.checked {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #f0fdf4;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.habit-item input[type="checkbox"] {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 22px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 22px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex: 0 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>accent-color: var(--tg-theme-button-color);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.habit-text {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.35;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.footer {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>gap: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 14px 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn-primary {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--tg-theme-button-color);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--tg-theme-button-text-color);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex: 1 1 220px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn-secondary {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #111827;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>flex: 1 1 160px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.helper {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted-text);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.92rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.95rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status.ok {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--ok-color);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.status.error {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--danger);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width: 480px) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>padding: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>.habit-item {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>padding: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>.title {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>font-size: 1.3rem;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="app"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card top-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1 class="title"&gt;📝 บันทึกความสำเร็จ&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="display-day" class="subtitle"&gt;กำลังโหลด...&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="progress-label-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;ความคืบหน้าวันนี้&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="progress-text"&gt;0/0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="progress-sub" id="progress-subtext"&gt;ยังไม่ได้เลือกกิจกรรม&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="progress-track"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="progress-fill" class="progress-fill"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="habit-list" id="habit-container"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="footer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn btn-primary" id="save-btn"&gt;บันทึกคะแนน&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn btn-secondary" id="clear-btn"&gt;ล้างทั้งหมด&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="helper" id="helper-text"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>เปิดผ่าน Telegram จะส่งข้อมูลกลับหาบอทได้ทันที</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="status" class="status"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const tg = window.Telegram?.WebApp || null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (tg) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.ready();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.expand();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const bg = tg.themeParams.bg_color;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const text = tg.themeParams.text_color;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const button = tg.themeParams.button_color;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const buttonText = tg.themeParams.button_text_color;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const secondary = tg.themeParams.secondary_bg_color;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (bg) document.documentElement.style.setProperty('--tg-theme-bg-color', bg);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (text) document.documentElement.style.setProperty('--tg-theme-text-color', text);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (button) document.documentElement.style.setProperty('--tg-theme-button-color', button);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (buttonText) document.documentElement.style.setProperty('--tg-theme-button-text-color', buttonText);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (secondary) document.documentElement.style.setProperty('--tg-theme-secondary-bg-color', secondary);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const habits = [</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H1", text: "🥤 เชคมื้อเช้า" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H2", text: "🏃 ออกกำลังกาย" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H3", text: "💧 ดื่มน้ำเพียงพอ" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H4", text: "🥤 เชคแก้วที่ 2" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H5", text: "🍚 มื้ออาหารสุขภาพ" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H6", text: "🌙 นอนหลับดี" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H7", text: "🍔 ไม่กินของอ้วน" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H8", text: "🚭 ไม่สูบบุหรี่" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>{ id: "H9", text: "🍺 ไม่ดื่มแอลกอฮอล์" }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const urlParams = new URLSearchParams(window.location.search);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const day = urlParams.get('day') || '?';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const type = urlParams.get('type') || 'Habit';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const preset = (urlParams.get('selected') || '').split(',').filter(Boolean);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const displayDay = document.getElementById('display-day');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const container = document.getElementById('habit-container');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const progressFill = document.getElementById('progress-fill');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const progressText = document.getElementById('progress-text');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const progressSubtext = document.getElementById('progress-subtext');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const saveBtn = document.getElementById('save-btn');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const clearBtn = document.getElementById('clear-btn');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const helperText = document.getElementById('helper-text');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const statusEl = document.getElementById('status');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>displayDay.innerText = `Day ${day} / ${type}`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function setStatus(message = '', mode = '') {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.className = 'status';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!message) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>statusEl.textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.textContent = message;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (mode) statusEl.classList.add(mode);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function getSelectedHabits() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb =&gt; cb.id);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function updateProgress() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const selected = getSelectedHabits();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const total = habits.length;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const done = selected.length;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const percent = total === 0 ? 0 : Math.round((done / total) * 100);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>progressFill.style.width = percent + '%';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>progressText.textContent = `${done}/${total}`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (done === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>progressSubtext.textContent = 'ยังไม่ได้เลือกกิจกรรม';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else if (done === total) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>progressSubtext.textContent = 'ยอดเยี่ยม ทำครบทุกข้อแล้ว 🎉';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>progressSubtext.textContent = `สำเร็จแล้ว ${percent}%`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.querySelectorAll('.habit-item').forEach(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const cb = item.querySelector('input[type="checkbox"]');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>item.classList.toggle('checked', cb.checked);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function renderHabits() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>container.innerHTML = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>habits.forEach(habit =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const row = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>row.className = 'habit-item';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const checked = preset.includes(habit.id);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>row.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="checkbox" id="${habit.id}" value="${habit.id}" ${checked ? 'checked' : ''}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label class="habit-text" for="${habit.id}"&gt;${habit.text}&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>row.addEventListener('click', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const checkbox = row.querySelector('input[type="checkbox"]');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (e.target.tagName !== 'INPUT') {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkbox.checked = !checkbox.checked;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>updateProgress();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>setStatus('');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>container.appendChild(row);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>updateProgress();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function buildPayload() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>action: "SUBMIT_HABIT",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>data: getSelectedHabits(),</p>
+<p class="p1"><span class="Apple-converted-space">        </span>day: day,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>type: type,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>total: habits.length,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>completed: getSelectedHabits().length,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>percent: Math.round((getSelectedHabits().length / habits.length) * 100)</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function saveData() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const selected = getSelectedHabits();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (selected.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (tg) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>tg.showAlert("กรุณาเลือกอย่างน้อย 1 รายการครับ");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>setStatus("กรุณาเลือกอย่างน้อย 1 รายการครับ", "error");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const payload = buildPayload();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (tg) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tg.sendData(JSON.stringify(payload));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setStatus("ส่งข้อมูลกลับไปที่ Telegram แล้ว", "ok");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setStatus("โหมดทดสอบ: หน้านี้ไม่ได้เปิดผ่าน Telegram", "error");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>console.log("TEST PAYLOAD:", payload);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("โหมดทดสอบ: ยังไม่ได้เปิดผ่าน Telegram\n\nดูข้อมูลที่ Console ได้");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function clearAll() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.querySelectorAll('input[type="checkbox"]').forEach(cb =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>cb.checked = false;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>updateProgress();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>setStatus('');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderHabits();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>saveBtn.addEventListener('click', saveData);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>clearBtn.addEventListener('click', clearAll);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (tg) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>helperText.textContent = "เชื่อมต่อกับ Telegram Web App แล้ว";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.MainButton.setText("บันทึกคะแนน");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.MainButton.show();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tg.MainButton.onClick(saveData);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>helperText.textContent = "โหมดทดสอบบนเว็บ: ปุ่มบันทึกจะยังไม่ส่งกลับ Telegram";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
