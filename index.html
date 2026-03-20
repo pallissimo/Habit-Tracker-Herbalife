@@ -405,13 +405,11 @@
     clearBtn.addEventListener('click', clearAll);
 
     if (tg) {
-      helperText.textContent = "เชื่อมต่อกับ Telegram Web App แล้ว";
-      tg.MainButton.setText("บันทึกคะแนน");
-      tg.MainButton.show();
-      tg.MainButton.onClick(saveData);
-    } else {
-      helperText.textContent = "โหมดทดสอบบนเว็บ: ปุ่มบันทึกจะยังไม่ส่งกลับ Telegram";
-    }
+  helperText.textContent = "เชื่อมต่อกับ Telegram Web App แล้ว";
+  tg.MainButton.hide();
+} else {
+  helperText.textContent = "โหมดทดสอบบนเว็บ: ปุ่มบันทึกจะยังไม่ส่งกลับ Telegram";
+}
   </script>
 </body>
 </html>
